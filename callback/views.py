@@ -30,7 +30,9 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 parser = WebhookParser(channel_secret)
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logger = logging.getLogger('django')
+
 
 def index(request):
     #if request.path_info != '/callback/':
