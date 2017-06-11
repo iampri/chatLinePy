@@ -16,6 +16,7 @@ from linebot.models import (
 
 import os
 import sys
+import logging
 
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
@@ -28,6 +29,8 @@ if channel_access_token is None:
 
 line_bot_api = LineBotApi(channel_access_token)
 parser = WebhookParser(channel_secret)
+
+logger = logging.getLogger(__name__)
 
 def index(request):
     #if request.path_info != '/callback/':
@@ -62,6 +65,8 @@ def index(request):
         if not isinstance(event.message, TextMessage):
             continue
 
+        logger.debug(event.message.text)
+            
         if event.message.text.upper() == 'M':
             replyText = 'คะ'
         else:
