@@ -152,7 +152,6 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'strm': sys.stdout,
             'formatter': 'simple'
         },
     },
