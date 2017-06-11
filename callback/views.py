@@ -65,7 +65,7 @@ def index(request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        logger.debug(event.message.text)
+        logger.info(event.message.text)
             
         if event.message.text.upper() == 'M':
             replyText = 'คะ'
