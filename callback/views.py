@@ -85,6 +85,9 @@ def index(request):
             TextSendMessage(text=replyText)
         )
         
+    group_id = "Cd837b599d26fc150abe6133ab274fe95"
+    line_bot_api.push_message(group_id, TextSendMessage(text='ก็ได้นะ'))
+    
     return HttpResponse()
 
     
