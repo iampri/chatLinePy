@@ -67,6 +67,12 @@ def index(request):
         if not isinstance(event.message, TextMessage):
             continue
 
+        if 'userId' in event.source:
+            logger.info("userId " +event.source.userId)
+            
+        if 'groupId' in event.source:
+            logger.info("groupId " + event.source.groupId)
+            
         logger.info(event.message.text)
             
         if event.message.text.upper() == 'M':
