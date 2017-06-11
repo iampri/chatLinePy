@@ -42,17 +42,20 @@ def index(request):
     #    return HttpResponseNotAllowed(['POST'])
 
     # get X-Line-Signature header value
-    request_headers = {}
-    for header in request.META:
-        if regex_http_x_line.match(header) or regex_content_length.match(header):
-            request_headers[header] = request.META[header]
+    #request_headers = {}
+    #for header in request.META:
+    #    if regex_http_x_line.match(header) or regex_content_length.match(header):
+    #        request_headers[header] = request.META[header]
 
+    if 'HTTP_X_LINE_SIGNATURE' in request.META:
+        signature = request.META['HTTP_X_LINE_SIGNATURE']
+    
     # get request body as text
     body = request.body.decode('utf-8')
 
     # parse webhook body
     try:
-        events = parser.parse(body, request_headers['HTTP_X_LINE_SIGNATURE'])
+        events = parser.parse(body, signature)
     except InvalidSignatureError:
         return HttpResponseBadRequest()
 
