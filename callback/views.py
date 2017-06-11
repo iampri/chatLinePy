@@ -67,11 +67,11 @@ def index(request):
         if not isinstance(event.message, TextMessage):
             continue
 
-        if 'userId' in event['source']:
-            logger.info("userId " + event.source.userId)
+        if event.source.type == "user":
+            logger.info("user_id " + event.source.user_id)
             
-        if 'groupId' in event['source']:
-            logger.info("groupId " + event.source.groupId)
+        if event.source.type == "group":
+            logger.info("group_id " + event.source.group_id)
             
         logger.info(event.message.text)
             
