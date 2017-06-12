@@ -1,0 +1,7 @@
+SET DATABASE_URL=postgres://botsteelframe:B1990otsteelframe@localhost/botsteelframe
+
+SET LINE_CHANNEL_SECRET=c315495c0d7b2b8cacdefff82291607d
+
+SET LINE_CHANNEL_ACCESS_TOKEN=R6qNjESrSyO5sAeEsnFUfjFFz/NULIsuemmy4wJL4BYOC1IthE9AhbhIQkwevLLUcZhWZwAL9dRouDCJ6PEJD/X6F+ZhlSmtpGphDcO0gptzRupot3Xmbj7sdBW7oRdQ5cY3v2aCYHxJ4Goe8tcgUwdB04t89/1O/w1cDnyilFU=
+
+
