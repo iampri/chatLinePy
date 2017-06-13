@@ -4,5 +4,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class BotsteelframeConfig(AppConfig):
-    name = 'botsteelframe'
+class SteelframeConfig(AppConfig):
+    name = 'steelframe'

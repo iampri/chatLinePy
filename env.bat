@@ -1,4 +1,4 @@
-DATABASE_URL=postgres://pychatline:P1990ychat@localhost/pychatline
+SET DATABASE_URL=postgres://pychatline:P1990ychat@localhost/pychatline
 
 SET LINE_CHANNEL_SECRET=c315495c0d7b2b8cacdefff82291607d
 

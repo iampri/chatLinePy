@@ -3,32 +3,65 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils import timezone
 from steelframe.models import Friend, EventLog, StateChat
 
 BotName = ('M','MONEY','MONEYPENNY','เอ็ม')
+WaitingMinutes = 1
 
 class BotChat():
     def reply_to(self, platform, talker_id, message):
         replyText = ''
         friend = Friend.objects.get(user_id=talker_id, platform=platform)
-        if (message.upper() in BotName):
-            if(friend):
-                statec = StateChat()
-                statec.friend_id = friend.id
-                statec.state = StateChat.STATEWAIT
-            replyText = 'คะ'
-        else:
-            if(friend):
-                statec = StateChat.objects.get(friend_id=friend.id)
-                if(not statec):
-                    statec.friend_id = friend.id
-                    statec.state = StateChat.STATELEAVE
+        if (friend):
+            statec = StateChat.objects.get(friend_id=friend.id)
+            if (statec):
+                if (message.upper() in BotName):
+                    statec.friend_id = friend
+                    statec.state = StateChat.STATEWAIT
+                    statec.modified_date = timezone.now
                     statec.save()
-                
-                if(statec.state==StateChat.STATEWAIT):
-                    replyText = message
+                    replyText = 'คะ'
                 else:
-                    replyText = ''
+                    if ((statec.state==StateChat.STATEWAIT) and (statec.modified_date > (timezone.now - timezone.timedelta(minutes=WaitingMinutes)))):
+                        statec.modified_date = timezone.now
+                        statec.save()
+
+                        replyText = message
+
+                    elif (statec.state!=StateChat.STATELEAVE):
+                        statec.state = StateChat.STATELEAVE
+                        statec.modified_date = timezone.now
+                        statec.save()
+                        
+            else:
+                statec = StateChat()
+                statec.friend_id = friend
+                statec.state = StateChat.STATELEAVE
+                statec.modified_date = timezone.now
+                statec.save()
+                            
+                    
+                    
+                    
+                    
+
+
+
+                    else:
+                        statec = StateChat()
+                        statec.friend_id = friend
+                        statec.state = StateChat.STATELEAVE
+                        statec.modified_date = timezone.now
+                        statec.save()
+                
+                    
+                    
+                    
+                    
+
+                    
+
                     
         return replyText
     

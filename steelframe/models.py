@@ -37,6 +37,7 @@ class StateChat(models.Model):
     
     friend_id = models.ForeignKey('Friend')
     state = models.CharField(max_length=100,default='LEAVE')
+    modified_date = models.DateTimeField(default=timezone.now)
     
 
     
