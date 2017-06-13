@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#from __future__ import unicode_literals
+from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseNotAllowed, HttpResponseBadRequest
@@ -14,6 +14,8 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
+from steelframe.models import Friend, EventLog, StateChat 
+
 import os
 import sys
 import logging
@@ -21,10 +23,10 @@ import logging
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 if channel_secret is None:
-    print('Specify LINE_CHANNEL_SECRET as environment variable.')
+    print('Please specify LINE_CHANNEL_SECRET as environment variable.')
     sys.exit(1)
 if channel_access_token is None:
-    print('Specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
+    print('Please specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
     sys.exit(1)
 
 line_bot_api = LineBotApi(channel_access_token)
@@ -60,7 +62,7 @@ def index(request):
     except InvalidSignatureError:
         return HttpResponseBadRequest()
 
-    # if event is MessageEvent and message is TextMessage, then echo text
+    # if event is MessageEvent and message is TextMessage
     for event in events:
         if not isinstance(event, MessageEvent):
             continue
@@ -68,22 +70,24 @@ def index(request):
             continue
 
         if event.source.type == "user":
+            talker_id = event.source.user_id
             logger.info("user_id " + event.source.user_id)
             
         if event.source.type == "group":
+            talker_id = event.source.group_id
             logger.info("group_id " + event.source.group_id)
             
-        logger.info(event.message.text)
-            
-        if event.message.text.upper() == 'M':
-            replyText = 'คะ'
-        else:
-            replyText = event.message.text
-            
+        talker_text = event.message.text    
+        logger.debug(event.message.text)
+        
+        botc = BotChat()
+        
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=replyText)
+            TextSendMessage(text=botc.reply_to('LINE', talker_id, talker_text))
         )
+        
+
         
     group_id = "Cd837b599d26fc150abe6133ab274fe95"
     line_bot_api.push_message(group_id, TextSendMessage(text='ก็ได้นะ'))
