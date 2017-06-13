@@ -85,7 +85,7 @@ def index(request):
         
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=botc.reply_to('LINE', talker_id, talker_text))
+            TextSendMessage(text=botc.reply_to('LINE',talker_id,talker_text))
         )
         
 
