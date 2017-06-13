@@ -14,7 +14,8 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
-from steelframe.models import Friend, EventLog, StateChat 
+from steelframe.models import Friend, EventLog, StateChat, KnownMessage 
+from steelframe.bot import BotChat
 
 import os
 import sys
@@ -89,8 +90,8 @@ def index(request):
         
 
         
-    group_id = "Cd837b599d26fc150abe6133ab274fe95"
-    line_bot_api.push_message(group_id, TextSendMessage(text='ก็ได้นะ'))
+    #group_id = "Cd837b599d26fc150abe6133ab274fe95"
+    #line_bot_api.push_message(group_id, TextSendMessage(text='ก็ได้นะ'))
     
     return HttpResponse()
 
