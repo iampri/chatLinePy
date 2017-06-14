@@ -82,11 +82,9 @@ def index(request):
         logger.debug(event.message.text)
         
         botc = BotChat()
-        
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=botc.reply_to('LINE',talker_id,talker_text))
-        )
+        reply_message = botc.reply_to('LINE',talker_id,talker_text)
+        if (reply_message):
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_message))
         
 
         
