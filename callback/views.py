@@ -11,7 +11,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    FollowEvent, MessageEvent, TextMessage, TextSendMessage,
+    FollowEvent, JoinEvent, MessageEvent, TextMessage, TextSendMessage,
 )
 
 from steelframe.models import Friend, EventLog, StateChat, KnownMessage 
@@ -65,6 +65,21 @@ def index(request):
 
     # if event is MessageEvent and message is TextMessage
     for event in events:
+        if isinstance(event, JoinEvent):
+            talker_id = event.source.group_id
+            logger.debug("join event, group_id: " + talker_id)
+            profile = line_bot_api.get_profile(talker_id)
+            friend = Friend()
+            friend.platform = 'LINE'
+            friend.user_id = talker_id
+            friend.friend_type = 'GROUP'
+            friend.display_name = profile.display_name
+#            print(profile.picture_url)
+#            print(profile.status_message)
+            friend.save()
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='แต้งกิ่ว'))
+            logger.debug("insert: " + profile.display_name)
+            continue
         if isinstance(event, FollowEvent):
             talker_id = event.source.user_id
             logger.debug("follow event, user_id: " + talker_id)

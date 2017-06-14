@@ -57,7 +57,7 @@ class BotChat():
                     replyText = randoms.choice(Yes)
                     logger.debug("order stop")
                 else:
-                    if ((statec.state==StateChat.STATEWAIT) and (statec.modified_date > (timezone.now() - timezone.timedelta(minutes=WaitingMinutes)))):
+                    if ((statec.state==StateChat.STATEWAIT) and (statec.modified_date > (timezone.now() + timezone.timedelta(minutes=WaitingMinutes)))):
                         if (message.upper() in TrainCommand):
                             statec.state = StateChat.STATETRAIN
                             replyText = 'เย้!!'
@@ -74,7 +74,7 @@ class BotChat():
                                 
                         statec.modified_date = timezone.now()
                         statec.save()
-                    elif ((statec.state==StateChat.STATETRAIN) and (statec.modified_date > (timezone.now() - timezone.timedelta(minutes=WaitingMinutes)))):
+                    elif ((statec.state==StateChat.STATETRAIN) and (statec.modified_date > (timezone.now() + timezone.timedelta(minutes=WaitingMinutes)))):
                         
                         sw = re.search(r"(^("+'|'.join(TrainSayWord)+r"))",message)
                         if sw:
