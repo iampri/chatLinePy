@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
 from steelframe.models import Friend, EventLog, StateChat, KnownMessage
+from steelframe.caret import Caret
 
 import random
 import re
@@ -18,7 +19,7 @@ WaitingMinutes = 5
 BotName = ('M','อ','MONEY','MONEYPENNY','เอ็ม','เอ็มโมเน่','โมเน่','เอ็มโม','โม','เน่')
 BotReply = ('ค่ะ','คะ',"yes ma'am",'yes sir')
 
-NotKnow = ['อยากไปเที่ยวจัง','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ','พูดภาษาคนดิ','เทอ เทอ มีแฟนยังอะ','ไปเที่ยวกันป่ะ','ช่วงนี้ดูอวบๆนะ','จะนอนยังอะ']
+NotKnow = ['อยากไปเที่ยวจัง','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ','พูดภาษาคนดิ','เทอ เทอ มีแฟนยังอะ','ไปเที่ยวกันป่ะ','ช่วงนี้ดูอวบๆนะ','จะนอนยังอะ','- v -']
 
 TrainCommand = ('จำนะ','สอน','เรียน','จำ','จำไว้','จำไว้นะ')
 TrainCommandReply = ['เย้!!','จำจำจำ เย้..']
@@ -71,6 +72,15 @@ class BotChat():
                             if (knownm):
                                 randoms = random.SystemRandom()
                                 replyText = randoms.choice(knownm)
+                                if (replyText.find("^") != -1):
+                                    caretMethods = [func for func in dir(Caret) if callable(getattr(Caret, func)) and not func.startswith("__")]
+                                    caret = Caret()
+                                    for method in caretMethods:
+                                        if (replyText.find(method) > 0):
+                                            mtd = getattr(caret, method)
+                                            res = mtd()
+                                            replyText = replyText.replace('^'+method,res)
+                                        
                                 logger.debug("found " + message + " in db and reply: " + replyText)
                             else:
                                 randoms = random.SystemRandom()
