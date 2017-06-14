@@ -1,0 +1,41 @@
+[
+{
+    "model": "steelframe.friend",
+    "pk": 2,
+    "fields": {
+        "display_name": "PriewsFriends",
+        "friend_type": "GROUP",
+        "user_id": "Cd837b599d26fc150abe6133ab274fe95",
+        "platform": "LINE",
+        "created_date": "2017-06-13T15:04:51.982Z",
+        "modified_date": "2017-06-13T15:04:51.982Z"
+    }
+},
+{
+    "model": "steelframe.statechat",
+    "pk": 1,
+    "fields": {
+        "friend": 2,
+        "state": "LEAVE",
+        "modified_date": "2017-06-14T02:08:32.071Z"
+    }
+},
+{
+    "model": "steelframe.knownmessage",
+    "pk": 6,
+    "fields": {
+        "friend": 2,
+        "say": "\u0e2d\u0e30\u0e44\u0e23",
+        "reply": "\u0e08\u0e30\u0e44\u0e1b\u0e23\u0e39\u0e49\u0e21\u0e31\u0e49\u0e22\u0e25\u0e30"
+    }
+},
+{
+    "model": "steelframe.knownmessage",
+    "pk": 7,
+    "fields": {
+        "friend": 2,
+        "say": "\u0e07\u0e48\u0e27\u0e07\u0e08\u0e31\u0e07",
+        "reply": "\u0e44\u0e1b\u0e19\u0e2d\u0e19\u0e0b\u0e34"
+    }
+}
+]
