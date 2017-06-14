@@ -65,6 +65,20 @@ def index(request):
 
     # if event is MessageEvent and message is TextMessage
     for event in events:
+        if isinstance(event, FollowEvent):
+            talker_id = event.source.user_id
+            logger.debug("follow event, user_id: " + talker_id)
+            profile = line_bot_api.get_profile(talker_id)
+            friend = Friend()
+            friend.platform = 'LINE'
+            friend.user_id = talker_id
+            friend.friend_type = 'PERSON'
+            friend.display_name = profile.display_name
+#            print(profile.picture_url)
+#            print(profile.status_message)
+            friend.save()
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='แต้งกิ่ว'))
+            continue
         if not isinstance(event, MessageEvent):
             continue
         if not isinstance(event.message, TextMessage):
@@ -72,11 +86,11 @@ def index(request):
 
         if event.source.type == "user":
             talker_id = event.source.user_id
-            logger.info("user_id " + event.source.user_id)
+            logger.debug("user_id " + event.source.user_id)
             
         if event.source.type == "group":
             talker_id = event.source.group_id
-            logger.info("group_id " + event.source.group_id)
+            logger.debug("group_id " + event.source.group_id)
             
         talker_text = event.message.text    
         logger.debug(event.message.text)
