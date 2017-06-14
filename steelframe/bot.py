@@ -15,9 +15,10 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('django')
 
 WaitingMinutes = 5
-BotName = ('M','MONEY','MONEYPENNY','เอ็ม')
+BotName = ('M','อ','MONEY','MONEYPENNY','เอ็ม','เอ็มโมเน่','โมเน่','เอ็มโม','โม','เน่')
+BotReply = ('ค่ะ','คะ',"yes ma'am",'yes sir')
 
-NotKnow = ['อยากไปเที่ยวจัง','เรารู้จักกันเหรอ','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ']
+NotKnow = ['อยากไปเที่ยวจัง','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ','พูดภาษาคนดิ','เทอ เทอ มีแฟนยังอะ']
 
 TrainCommand = ('จำนะ','สอน','เรียน','จำ','จำไว้','จำไว้นะ')
 TrainCommandReply = ['เย้!!','จำจำจำ เย้..']
@@ -31,9 +32,9 @@ RepeatReply = 'ให้ตอบว่า'
 
 Yes = ['ค่ะ','ได้ค่ะ','ดั้ยค่ะ','ได้เลย','ก็ได้']
 
-Thankyou = ['ขอบคุณคะ','จัยจร้า','จุบุจุบุ']
+Thankyou = ['ขอบคุณคะ','จัยจร้า','หว้าา..า']
 
-BotStop = ('หยุด','เงียบ','stop')
+BotStop = ('หยุด','เงียบ','stop','shutup', 'shut up')
 
 #need optimize!!
 class BotChat():
@@ -48,9 +49,8 @@ class BotChat():
                     statec.state = StateChat.STATEWAIT
                     statec.modified_date = timezone.now()
                     statec.save()
-                    #randoms = random.SystemRandom()
-                    #replyText = randoms.choice(Yes)
-                    replyText = 'คะ'
+                    randoms = random.SystemRandom()
+                    replyText = randoms.choice(BotReply)
                     logger.debug("call m")
                 elif (message.upper() in BotStop):
                     statec.state = StateChat.STATELEAVE
