@@ -11,10 +11,6 @@ class Friend(models.Model):
     platform = models.CharField(max_length=100)
     created_date = models.DateTimeField(default=timezone.now)
     modified_date = models.DateTimeField(default=timezone.now)
-        
-    def follow(self):
-        self.modified_date = timezone.now()
-        self.save()
 
     def __unicode__(self):
         return 'platform: ' + self.platform + ', friend_type: ' + self.friend_type + ', display_name: ' + self.display_name
@@ -24,7 +20,7 @@ class EventLog(models.Model):
     event_name = models.CharField(max_length=200)
     created_date = models.DateTimeField(default=timezone.now)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.event_name
 
 class StateChat(models.Model):

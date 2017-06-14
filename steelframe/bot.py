@@ -16,8 +16,11 @@ logger = logging.getLogger('django')
 
 WaitingMinutes = 5
 BotName = ('M','MONEY','MONEYPENNY','เอ็ม')
-TrainCommand = ('จำนะ','สอน','เรียน','จำ','จำไว้','จำไว้นะ')
+
 NotKnow = ['อยากไปเที่ยวจัง','เรารู้จักกันเหรอ','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ']
+
+TrainCommand = ('จำนะ','สอน','เรียน','จำ','จำไว้','จำไว้นะ')
+TrainCommandReply = ['เย้!!','จำจำจำ เย้..']
 TrainSayWord = ('พูดว่า','พูด','ถ้าพูดว่า')
 TrainReplyWord = ('ตอบว่า','ตอบ','ให้ตอบว่า')
 TrainEndWord = ('จบ','พอละ','แค่นี้')
@@ -26,7 +29,7 @@ RepeatForReply = 'ให้ตอบว่างัยคะ'
 RepeatSay = 'พูดว่า'
 RepeatReply = 'ให้ตอบว่า'
 
-Yes = ['คะ','ได้คะ','ดั้ยคะ','ได้เลย','ก็ได้']
+Yes = ['ค่ะ','ได้ค่ะ','ดั้ยค่ะ','ได้เลย','ก็ได้']
 
 Thankyou = ['ขอบคุณคะ','จัยจร้า','จุบุจุบุ']
 
@@ -60,12 +63,14 @@ class BotChat():
                     if ((statec.state==StateChat.STATEWAIT) and (statec.modified_date > (timezone.now() - timezone.timedelta(minutes=WaitingMinutes)))):
                         if (message.upper() in TrainCommand):
                             statec.state = StateChat.STATETRAIN
-                            replyText = 'เย้!!'
+                            randoms = random.SystemRandom()
+                            replyText = randoms.choice(TrainCommandReply)
                             logger.debug("call train")
                         else:
-                            knownm = KnownMessage.objects.filter(say=message).first()
+                            knownm = KnownMessage.objects.filter(say=message).values_list('reply', flat=True)
                             if (knownm):
-                                replyText = knownm.reply
+                                randoms = random.SystemRandom()
+                                replyText = randoms.choice(knownm)
                                 logger.debug("found " + message + " in db and reply: " + replyText)
                             else:
                                 randoms = random.SystemRandom()

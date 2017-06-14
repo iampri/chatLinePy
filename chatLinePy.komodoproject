@@ -2,5 +2,9 @@
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="dc2bda54-64b4-4394-b423-92de23bc2474" kpf_version="5" name="chatLinePy.komodoproject">
 <preference-set idref="dc2bda54-64b4-4394-b423-92de23bc2474" id="project" preftype="project">
+  <string relative="path" id="import_dirname"></string>
+  <string id="last_local_directory">None</string>
+  <string id="last_remote_directory">None</string>
+  <long id="prefs_version">1</long>
 </preference-set>
 </project>
