@@ -84,7 +84,7 @@ class BotChat():
                         sw = re.search(r"(^("+'|'.join(TrainSayWord)+r"))",message)
                         if sw:
                             logger.debug("found sw: " + sw.group(1))
-                            knownm = KnownMessage.objects.filter(reply=None).first()
+                            knownm = KnownMessage.objects.filter(reply=None,friend=friend).first()
                             if (not knownm):
                                 knownm = KnownMessage()
                             knownm.friend = friend
@@ -96,7 +96,7 @@ class BotChat():
                         rw = re.search(r"(^("+'|'.join(TrainReplyWord)+r"))",message)
                         if rw:
                             logger.debug("found rw: " + rw.group(1))
-                            knownm = KnownMessage.objects.filter(reply=None).first()
+                            knownm = KnownMessage.objects.filter(reply=None,friend=friend).first()
                             knownm.reply = message.replace(rw.group(1), ' ', 1).strip()
                             knownm.save()
                             replyText = RepeatSay + knownm.say + ' ' + RepeatReply + knownm.reply
