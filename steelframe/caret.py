@@ -29,5 +29,4 @@ class Caret():
         prizef3 = tree.xpath('//div[@id="prize-f3"]/div/span/span/text()')
         prizel3 = tree.xpath('//div[@id="prize-l3"]/div/span/span/text()')
         prizen1 = tree.xpath('//div[@id="prize-n1"]/div/span/span/text()')
-        return "รางวัลที่ 1 " + prize1[0] + ', เลขท้าย 2 ตัว ' + prizel2[0] + ', เลขหน้า 3 ตัว ' + prizef3[0] + ', เลขท้าย 3 ตัว ' + prizel3[0] + ', รางวัลข้างเคียงรางวัลที่ 1 ' + prizen1[0] + ', งวดหน้าออกอะไร เอ็มไม่รุ ถ้าอยากรู้ ลองถาม อาจารย์อ๊อด'
-        #return prize1
+        return "รางวัลที่ 1 " + prize1[0] + ', เลขท้าย 2 ตัว ' + prizel2[0] + ', เลขหน้า 3 ตัว ' + prizef3[0] + ', เลขท้าย 3 ตัว ' + prizel3[0] + ', รางวัลข้างเคียงรางวัลที่ 1 ' + prizen1[0]
