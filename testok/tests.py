@@ -14,8 +14,8 @@ class TestOKTestCase(TestCase):
     
     fixtures = ['steelframe.json']
     
-    def test_cli(self):
-        replyText = "^time^date"
+    def test_caretfunc(self):
+        replyText = "^lottery"
         if (replyText.find("^") != -1):
             caretMethods = [func for func in dir(Caret) if callable(getattr(Caret, func)) and not func.startswith("__")]
             caret = Caret()
