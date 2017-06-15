@@ -11,7 +11,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    FollowEvent, JoinEvent, MessageEvent, TextMessage, TextSendMessage,
+    FollowEvent, JoinEvent, MessageEvent, TextMessage, StickerMessage, TextSendMessage, StickerSendMessage,
 )
 
 from steelframe.models import Friend, EventLog, StateChat, KnownMessage 
