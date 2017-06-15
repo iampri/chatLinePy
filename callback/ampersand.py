@@ -12,6 +12,16 @@ import logging
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('django')
 
+from linebot import (
+    LineBotApi, WebhookParser
+)
+from linebot.exceptions import (
+    InvalidSignatureError
+)
+from linebot.models import (
+    FollowEvent, JoinEvent, MessageEvent, TextMessage, StickerMessage, TextSendMessage, 
+)
+
 class Ampersand():
     def stk(self,line_bot_api,token,parameters):
         if (parameters[0] == ';'): parameters = parameters[1:]
