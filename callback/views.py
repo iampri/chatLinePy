@@ -108,7 +108,7 @@ def index(request):
             #https://devdocs.line.me/files/sticker_list.pdf
             sId = randint(180, 259)
             #pId = randint(1, 3)
-            line_bot_api.reply_message(token,StickerSendMessage(sticker_id=sId,package_id=3))
+            line_bot_api.reply_message(event.reply_token,StickerSendMessage(sticker_id=sId,package_id=3))
         
         if not isinstance(event.message, TextMessage):
             continue
