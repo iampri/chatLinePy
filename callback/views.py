@@ -102,7 +102,9 @@ def index(request):
             continue
         
         if isinstance(event.message, StickerMessage):
-            logger.debug("sticker packageId: " + event.message.packageId + ", stickerId: " + event.message.stickerId)
+            #logger.debug("sticker packageId: " + event.message.packageId + ", stickerId: " + event.message.stickerId)
+            logger.debug("receive sticker message")
+            
             #https://devdocs.line.me/files/sticker_list.pdf
             sId = randint(180, 259)
             #pId = randint(1, 3)
