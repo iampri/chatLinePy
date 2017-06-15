@@ -114,14 +114,14 @@ def index(request):
         botc = BotChat()
         reply_message = botc.reply_to('LINE',talker_id,talker_text)
         if (reply_message):
-            is_ampersandfunc = false
+            is_ampersandfunc = False
             if (reply_message[0] == '&'):
                 ampersandMethods = [func for func in dir(Ampersand) if callable(getattr(Ampersand, func)) and not func.startswith("__")]
                 ampersand = Ampersand()
                 for method in ampersandMethods:
                     pos = reply_message.find(method) 
                     if (pos == 1):
-                        is_ampersandfunc = true
+                        is_ampersandfunc = True
                         mtd = getattr(ampersand, method)
                         
                         parameters = reply_message[len(method)+1:]
