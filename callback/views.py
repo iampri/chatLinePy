@@ -17,6 +17,8 @@ from linebot.models import (
 from steelframe.models import Friend, EventLog, StateChat, KnownMessage 
 from steelframe.bot import BotChat
 
+from callback.ampersand import Ampersand
+
 import os
 import sys
 import logging
