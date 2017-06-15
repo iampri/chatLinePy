@@ -19,13 +19,13 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    FollowEvent, JoinEvent, MessageEvent, TextMessage, StickerMessage, TextSendMessage, 
+    FollowEvent, JoinEvent, MessageEvent, TextMessage, StickerMessage, TextSendMessage, StickerSendMessage,
 )
 
 class Ampersand():
     def stk(self,line_bot_api,token,parameters):
         if (parameters[0] == ';'): parameters = parameters[1:]
         pl = parameters.split(';')
-        line_bot_api.reply_message(token,StickerMessage(sticker_id=pl[0],package_id=pl[1]))
+        line_bot_api.reply_message(token,StickerSendMessage(sticker_id=pl[0],package_id=pl[1]))
         
     

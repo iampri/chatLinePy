@@ -22,6 +22,7 @@ from callback.ampersand import Ampersand
 import os
 import sys
 import logging
+from random import randint
 
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
@@ -99,6 +100,14 @@ def index(request):
             continue
         if not isinstance(event, MessageEvent):
             continue
+        
+        if isinstance(event.message, StickerMessage):
+            logger.debug("sticker packageId: " + event.message.packageId + ", stickerId: " + event.message.stickerId)
+            #https://devdocs.line.me/files/sticker_list.pdf
+            sId = randint(180, 259)
+            #pId = randint(1, 3)
+            line_bot_api.reply_message(token,StickerSendMessage(sticker_id=sId,package_id=3))
+        
         if not isinstance(event.message, TextMessage):
             continue
 
