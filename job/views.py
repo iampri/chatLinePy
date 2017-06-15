@@ -7,7 +7,7 @@ from job.jobs import Jobs
 def index(request):
     
     job = Jobs()
-    job.run()
+    res = job.run()
     
-    return HttpResponse('oki')
+    return HttpResponse(res)
 

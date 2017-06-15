@@ -7,6 +7,8 @@ import dj_database_url
 
 from steelframe.models import Friend, EventLog, StateChat, KnownMessage
 from steelframe.caret import Caret
+from job.jobs import Jobs
+
 
 WaitingMinutes = 5
 
@@ -15,9 +17,9 @@ class TestOKTestCase(TestCase):
     fixtures = ['steelframe.json']
     
     def test_python(self):
-        src = ";sdfdsf;dfgdfg;;"
-        data = src.split(";")
-        self.assertIsNone(data)
+        job = Jobs()
+        res = job.run()
+        self.assertIsNone(res)
     
     def test_caretfunc(self):
         replyText = "^lottery"

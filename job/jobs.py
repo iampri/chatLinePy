@@ -17,7 +17,9 @@ logger = logging.getLogger('django')
 
 class Jobs():
     def run(self):
+        result = 'completed'
         
-        logger.debug("job run")
+        logger.debug("job run: " + result)
+        return result
 
     

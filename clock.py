@@ -6,7 +6,7 @@ sched = BlockingScheduler()
 @sched.scheduled_job('interval', minutes=1)
 def timed_job():
     job = Jobs()
-    job.run()
+    res = job.run()
     print('Timer is ticked...')
 
 sched.start()
