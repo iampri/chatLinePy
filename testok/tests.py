@@ -14,6 +14,11 @@ class TestOKTestCase(TestCase):
     
     fixtures = ['steelframe.json']
     
+    def test_python(self):
+        src = ";sdfdsf;dfgdfg;;"
+        data = src.split(";")
+        self.assertIsNone(data)
+    
     def test_caretfunc(self):
         replyText = "^lottery"
         if (replyText.find("^") != -1):
@@ -24,7 +29,7 @@ class TestOKTestCase(TestCase):
                     mtd = getattr(caret, method)
                     res = mtd()
                     replyText = replyText.replace('^'+method,res)
-        self.assertIsNone(replyText)
+        self.assertIsNotNone(replyText)
         
     def test_getmethod(self):
         method_list = [func for func in dir(Caret) if callable(getattr(Caret, func)) and not func.startswith("__")]

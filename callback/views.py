@@ -114,7 +114,23 @@ def index(request):
         botc = BotChat()
         reply_message = botc.reply_to('LINE',talker_id,talker_text)
         if (reply_message):
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_message))
+            is_ampersandfunc = false
+            if (reply_message[0] == '&'):
+                ampersandMethods = [func for func in dir(Ampersand) if callable(getattr(Ampersand, func)) and not func.startswith("__")]
+                ampersand = Ampersand()
+                for method in ampersandMethods:
+                    pos = reply_message.find(method) 
+                    if (pos == 1):
+                        is_ampersandfunc = true
+                        mtd = getattr(ampersand, method)
+                        
+                        parameters = reply_message[len(method)+1:]
+                        res = mtd(line_bot_api,event.reply_token,parameters)
+                        
+                        break
+            
+            if (not is_ampersandfunc):                            
+                line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_message))
         
 
         
