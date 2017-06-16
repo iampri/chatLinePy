@@ -16,10 +16,10 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('django')
 
 class Jobs():
-    def run(self):
+    def find(self):
         result = 'completed'
         
-        logger.debug("job run: " + result)
+        logger.debug("job find: " + result)
         return result
 
     

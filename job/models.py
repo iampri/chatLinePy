@@ -25,9 +25,11 @@ class Job(models.Model):
     job_status = models.CharField(max_length=50)
     platform = models.CharField(max_length=100)
     created_date = models.DateTimeField(default=timezone.now)
-    created_by = models.IntegerField(null=True)
+    #created_by = models.IntegerField(null=True)
+    created_by = models.ForeignKey(Friend, null=True, related_name='creator')
     modified_date = models.DateTimeField(default=timezone.now)
-    modified_by = models.IntegerField(null=True)
+    #modified_by = models.IntegerField(null=True)
+    modified_by = models.ForeignKey(Friend, null=True, related_name='modifier')
     
     def __unicode__(self):
         return 'job_name: ' + self.job_name + ', job_command: ' + self.job_command + ', job_status: ' + self.job_status
