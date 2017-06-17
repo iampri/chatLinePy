@@ -18,8 +18,10 @@ logger = logging.getLogger('django')
 class Jobs():
     def find(self):
         result = 'completed'
-        
+
         logger.debug("job find: " + result)
         return result
 
-    
+    def create(self):
+        pass
+

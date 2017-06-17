@@ -1,4 +1,24 @@
 # -*- coding: utf-8 -*-
+
+# Copyright 2017 MYNASINGSWOO. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+
+"""
+bot core
+"""
+
 from __future__ import unicode_literals
 
 from django.shortcuts import render
@@ -15,13 +35,14 @@ import logging
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('django')
 
-WaitingMinutes = 5
-BotName = ('M','อ','MONEY','MONEYPENNY','เอ็ม','เอ็มโมเน่','โมเน่','เอ็มโม','โม','เน่')
-BotReply = ('ค่ะ','คะ',"yes ma'am",'yes sir')
+WAITING_MINUTES = 5
 
-NotKnow = ['อยากไปเที่ยวจัง','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ','พูดภาษาคนดิ','เทอ เทอ มีแฟนยังอะ','ไปเที่ยวกันป่ะ','ช่วงนี้ดูอวบๆนะ','จะนอนยังอะ','- v -']
+BotName = ('M', 'อ', 'MONEY', 'MONEYPENNY', 'เอ็ม', 'เอ็มโมเน่', 'โมเน่', 'เอ็มโม', 'โม', 'เน่')
+BotReply = ('ค่ะ', 'คะ', "yes ma'am", 'yes sir')
 
-TrainCommand = ('จำนะ','สอน','เรียน','จำ','จำไว้','จำไว้นะ')
+NotKnow = ['อยากไปเที่ยวจัง','เค้าเขินนะ..','^ ^','^ ^"','...','- -"','รัยอะ','เทอ เทอ มีแฟนยังอะ','ไปเที่ยวกันป่ะ','ช่วงนี้ดูอวบๆนะ','จะนอนยังอะ','- v -']
+
+TrainCommand = ('จำนะ','สอน','เรียน','จำ','จำไว้','จำไว้นะ','ช่วยจำ','ช่วยจำนะ','จำไว้ที')
 TrainCommandReply = ['เย้!!','จำจำจำ เย้..']
 TrainSayWord = ('พูดว่า','พูด','ถ้าพูดว่า')
 TrainReplyWord = ('ตอบว่า','ตอบ','ให้ตอบว่า')
@@ -39,101 +60,34 @@ BotStop = ('หยุด','เงียบ','stop','shutup', 'shut up')
 
 #need optimize!!
 class BotChat():
-    def reply_to(self, platform, talker_id, message):
-        replyText = ''
-        friend = Friend.objects.filter(user_id=talker_id, platform=platform).first()
-        if (friend):
-            statec = StateChat.objects.filter(friend=friend).first()
-            if (statec):
-                if (message.upper() in BotName):
-                    statec.friend = friend
-                    statec.state = StateChat.STATEWAIT
-                    statec.modified_date = timezone.now()
-                    statec.save()
-                    randoms = random.SystemRandom()
-                    replyText = randoms.choice(BotReply)
-                    logger.debug("call m")
-                elif (message.upper() in BotStop):
-                    statec.state = StateChat.STATELEAVE
-                    statec.modified_date = timezone.now()
-                    statec.save()
-                    randoms = random.SystemRandom()
-                    replyText = randoms.choice(Yes)
-                    logger.debug("order stop")
-                else:
-                    if ((statec.state==StateChat.STATEWAIT) and (statec.modified_date > (timezone.now() - timezone.timedelta(minutes=WaitingMinutes)))):
-                        if (message.upper() in TrainCommand):
-                            statec.state = StateChat.STATETRAIN
-                            randoms = random.SystemRandom()
-                            replyText = randoms.choice(TrainCommandReply)
-                            logger.debug("call train")
-                        else:
-                            knownm = KnownMessage.objects.filter(say=message).values_list('reply', flat=True)
-                            if (knownm):
-                                randoms = random.SystemRandom()
-                                replyText = randoms.choice(knownm)
-                                if (replyText.find("^") != -1):
-                                    caretMethods = [func for func in dir(Caret) if callable(getattr(Caret, func)) and not func.startswith("__")]
-                                    caret = Caret()
-                                    for method in caretMethods:
-                                        if (replyText.find(method) > 0):
-                                            mtd = getattr(caret, method)
-                                            res = mtd()
-                                            replyText = replyText.replace('^'+method,res)
-                                        
-                                logger.debug("found " + message + " in db and reply: " + replyText)
-                            else:
-                                randoms = random.SystemRandom()
-                                replyText = randoms.choice(NotKnow)
-                                logger.debug("Not found " + message + " in db and reply: " + replyText)
-                                
-                        statec.modified_date = timezone.now()
-                        statec.save()
-                    elif ((statec.state==StateChat.STATETRAIN) and (statec.modified_date > (timezone.now() - timezone.timedelta(minutes=WaitingMinutes)))):
-                        
-                        sw = re.search(r"(^("+'|'.join(TrainSayWord)+r"))",message)
-                        if sw:
-                            logger.debug("found sw: " + sw.group(1))
-                            knownm = KnownMessage.objects.filter(reply=None,friend=friend).first()
-                            if (not knownm):
-                                knownm = KnownMessage()
-                            knownm.friend = friend
-                            knownm.say = message.replace(sw.group(1), ' ', 1).strip()
-                            knownm.reply = None
-                            knownm.save()
-                            replyText = message + " " + RepeatForReply
-                            
-                        rw = re.search(r"(^("+'|'.join(TrainReplyWord)+r"))",message)
-                        if rw:
-                            logger.debug("found rw: " + rw.group(1))
-                            knownm = KnownMessage.objects.filter(reply=None,friend=friend).first()
-                            knownm.reply = message.replace(rw.group(1), ' ', 1).strip()
-                            knownm.save()
-                            replyText = RepeatSay + knownm.say + ' ' + RepeatReply + knownm.reply
-                            
-                        if (message.upper() in TrainEndWord):
-                            statec.state = StateChat.STATEWAIT
-                            randoms = random.SystemRandom()
-                            replyText = randoms.choice(Thankyou)
-                            
-                        statec.modified_date = timezone.now()
-                        statec.save()
-                    elif (statec.state!=StateChat.STATELEAVE):
-                        statec.state = StateChat.STATELEAVE
-                        statec.modified_date = timezone.now()
-                        statec.save()
-            # if (statec):         
-            else:
-                statec = StateChat()
-                statec.friend = friend
-                statec.state = StateChat.STATELEAVE
-                statec.modified_date = timezone.now()
-                statec.save()
-                            
-                    
-        return replyText
-    
-    
-    
-    
-    
+	""" bot chat """
+	platform = ''
+	talker_id = ''
+
+	def __init__(self,platform,talker_id):
+		platform = platform
+		talker_id = talker_id
+
+	def state(self):
+		
+		return ''
+
+	def reply_to(self, message):
+		reply_text = ''
+		friend = Friend.objects.filter(user_id=self.talker_id, platform=self.platform).first()
+		if friend:
+			statec = StateChat.objects.filter(friend=friend).first()
+			if statec:
+				knownm = KnownMessage.objects.filter(say=message).values_list('reply', flat=True)
+				if knownm:
+					randoms = random.SystemRandom()
+					reply_text = randoms.choice(knownm)
+
+
+
+				else:
+					unknownm = KnownMessage.objects.filter(say='2017dontknowword0617').values_list('reply', flat=True)
+					randoms = random.SystemRandom()
+					reply_text = randoms.choice(unknownm)
+
+		return reply_text

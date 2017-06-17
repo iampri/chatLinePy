@@ -28,4 +28,5 @@ class Ampersand():
         pl = parameters.split(';')
         line_bot_api.reply_message(token,StickerSendMessage(sticker_id=pl[0],package_id=pl[1]))
         
-    
+    def job(self):
+        pass

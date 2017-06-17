@@ -12,7 +12,7 @@ import logging
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger('django')
 
-class Caret():
+class Asterisk():
     def time(self):
         ict = pytz.timezone('Asia/Bangkok')
         return timezone.now().astimezone(ict).strftime('%H:%M %p')
